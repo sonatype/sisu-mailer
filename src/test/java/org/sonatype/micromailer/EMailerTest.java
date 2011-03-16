@@ -12,11 +12,12 @@
  */
 package org.sonatype.micromailer;
 
+import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 
 import junit.framework.Assert;
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.sonatype.guice.bean.containers.InjectedTestCase;
 import org.sonatype.micromailer.imp.DefaultMailType;
 import org.sonatype.micromailer.imp.HtmlMailType;
 
@@ -25,17 +26,10 @@ import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetup;
 
 public class EMailerTest
-    extends PlexusTestCase
+    extends InjectedTestCase
 {
+    @Inject
     private EMailer eMailer;
-
-    protected void setUp()
-        throws Exception
-    {
-        super.setUp();
-
-        eMailer = (EMailer) lookup( EMailer.class );
-    }
 
     public void testWithoutConfiguration()
         throws Exception

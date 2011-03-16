@@ -12,15 +12,17 @@
  */
 package org.sonatype.micromailer.imp;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.sonatype.micromailer.MailType;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * The simple default mail type.
  * 
  * @author cstamas
  */
-@Component( role = MailType.class, hint = DefaultMailType.DEFAULT_TYPE_ID )
+
+@Singleton
+@Named( DefaultMailType.DEFAULT_TYPE_ID )
 public class DefaultMailType
     extends AbstractMailType
 {

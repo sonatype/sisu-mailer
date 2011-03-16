@@ -17,10 +17,11 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.logging.Logger;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.slf4j.Logger;
 import org.sonatype.micromailer.EMailer;
 import org.sonatype.micromailer.EmailerConfiguration;
 import org.sonatype.micromailer.MailComposer;
@@ -39,21 +40,24 @@ import org.sonatype.micromailer.MailTypeSource;
  * 
  * @author cstamas
  */
-@Component( role = EMailer.class )
+@Singleton
+@Named
 public class DefaultEMailer
-    extends AbstractLogEnabled
     implements EMailer
 {
-    @Requirement
+    @Inject
+    private Logger logger;
+    
+    @Inject
     private MailTypeSource mailTypeSource;
 
-    @Requirement
+    @Inject
     private MailComposer mailComposer;
 
-    @Requirement
+    @Inject
     private MailStorage mailStorage;
 
-    @Requirement
+    @Inject
     private MailSender mailSender;
 
     private EmailerConfiguration emailerConfiguration = new EmailerConfiguration();
@@ -97,7 +101,7 @@ public class DefaultEMailer
     {
         if ( mailRequestSource.hasWaitingRequests() )
         {
-            getLogger().info( "* Got batch request, processing it..." );
+            logger.info( "* Got batch request, processing it..." );
 
             for ( Iterator<MailRequest> i = mailRequestSource.getRequestIterator(); i.hasNext(); )
             {
@@ -108,7 +112,7 @@ public class DefaultEMailer
                 mailRequestSource.setMailRequestStatus( request, status );
             }
 
-            getLogger().info( "* Finished batch request processing." );
+            logger.info( "* Finished batch request processing." );
         }
     }
 
@@ -117,7 +121,7 @@ public class DefaultEMailer
 
     protected MailRequestStatus handleMailRequest( MailRequest request )
     {
-        getLogger().info( "  Handling mail request " + request.getRequestId() );
+        logger.info( "  Handling mail request " + request.getRequestId() );
 
         MailRequestStatus status = new MailRequestStatus( request );
 
@@ -128,7 +132,7 @@ public class DefaultEMailer
 
     private RunnableMailer createMailer( MailRequest request, MailRequestStatus status )
     {
-        return new RunnableMailer( getLogger(), request, mailTypeSource, mailComposer, emailerConfiguration,
+        return new RunnableMailer( logger, request, mailTypeSource, mailComposer, emailerConfiguration,
                                    mailStorage, mailSender, status );
     }
 

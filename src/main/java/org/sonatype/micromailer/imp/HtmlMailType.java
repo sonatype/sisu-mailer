@@ -12,13 +12,14 @@
  */
 package org.sonatype.micromailer.imp;
 
-import org.codehaus.plexus.component.annotations.Component;
-import org.sonatype.micromailer.MailType;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * The html mail type.
  */
-@Component( role = MailType.class, hint = HtmlMailType.HTML_TYPE_ID )
+@Singleton
+@Named( HtmlMailType.HTML_TYPE_ID )
 public class HtmlMailType
     extends AbstractMailType
 {

@@ -12,12 +12,13 @@
  */
 package org.sonatype.micromailer.imp;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
-import org.codehaus.plexus.component.annotations.Component;
 import org.sonatype.micromailer.EmailerConfiguration;
 import org.sonatype.micromailer.MailCompositionAttachmentException;
 import org.sonatype.micromailer.MailCompositionMessagingException;
@@ -30,7 +31,8 @@ import org.sonatype.micromailer.MailType;
  * 
  * @author cstamas
  */
-@Component( role = MailSender.class )
+@Singleton
+@Named
 public class DefaultMailSender
     implements MailSender
 {

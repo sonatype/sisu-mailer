@@ -19,9 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.activation.DataHandler;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -29,8 +32,6 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.velocity.VelocityComponent;
 import org.sonatype.micromailer.Address;
 import org.sonatype.micromailer.EmailerConfiguration;
@@ -46,7 +47,8 @@ import org.sonatype.micromailer.MailType;
  * 
  * @author cstamas
  */
-@Component( role = MailComposer.class )
+@Singleton
+@Named
 public class DefaultMailComposer
     implements MailComposer
 {
@@ -60,7 +62,7 @@ public class DefaultMailComposer
 
     public static final String X_MESSAGE_ID_HEADER = "X-EMailer-Mail-Request-ID";
 
-    @Requirement
+    @Inject @Named("micromailer")
     private VelocityComponent velocityComponent;
 
     protected Map<String, Object> initialVelocityContext;
