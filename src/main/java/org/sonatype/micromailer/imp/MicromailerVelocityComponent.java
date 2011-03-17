@@ -9,23 +9,27 @@ import javax.inject.Singleton;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.runtime.log.LogSystem;
 import org.codehaus.plexus.velocity.VelocityComponent;
 import org.slf4j.Logger;
 
 @Singleton
 @Named( "micromailer" )
 public class MicromailerVelocityComponent
-    implements VelocityComponent
+    implements VelocityComponent, LogSystem
 {
-    @Inject
     private Logger logger;
 
     private VelocityEngine engine;
 
     private Properties properties;
 
-    public MicromailerVelocityComponent()
+    @Inject
+    public MicromailerVelocityComponent( Logger logger )
     {
+        this.logger = logger;
+
         engine = new VelocityEngine();
 
         // avoid "unable to find resource 'VM_global_library.vm' in any resource loader."
@@ -60,6 +64,37 @@ public class MicromailerVelocityComponent
     public VelocityEngine getEngine()
     {
         return engine;
+    }
+
+    public void init( RuntimeServices runtimeServices )
+        throws Exception
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void logVelocityMessage( int level, String message )
+    {
+        switch ( level )
+        {
+            case LogSystem.WARN_ID:
+                logger.warn( message );
+                break;
+            case LogSystem.INFO_ID:
+                // velocity info messages are too verbose, just consider them as debug messages...
+                logger.debug( message );
+                break;
+            case LogSystem.DEBUG_ID:
+                logger.debug( message );
+                break;
+            case LogSystem.ERROR_ID:
+                logger.error( message );
+                break;
+            default:
+                logger.debug( message );
+                break;
+        }
+
     }
 
 }
