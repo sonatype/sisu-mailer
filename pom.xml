@@ -1,116 +1,115 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.sonatype.spice</groupId>
-		<artifactId>spice-parent</artifactId>
-		<version>15</version>
-	</parent>
+  <parent>
+    <groupId>org.sonatype.spice</groupId>
+    <artifactId>spice-parent</artifactId>
+    <version>17</version>
+  </parent>
 
-	<groupId>org.sonatype.sisu</groupId>
-	<artifactId>sisu-mailer</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>Sisu Mailer</name>
+  <groupId>org.sonatype.sisu</groupId>
+  <artifactId>sisu-mailer</artifactId>
+  <version>1.1.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Sisu Mailer</name>
 
-	<properties>
-		<sisu-inject-bean.version>2.2.0</sisu-inject-bean.version>
-		<slf4j.version>1.6.1</slf4j.version>
-	</properties>
+  <properties>
+    <sisu-inject-bean.version>2.2.0</sisu-inject-bean.version>
+    <slf4j.version>1.6.1</slf4j.version>
+  </properties>
 
-	<!-- TODO: switch to github -->
-	<scm>
-		<connection>scm:svn:http://svn.sonatype.org/spice/trunk/micromailer</connection>
-		<url>http://svn.sonatype.org/spice/trunk/micromailer</url>
-		<developerConnection>scm:svn:https://svn.sonatype.org/spice/trunk/micromailer</developerConnection>
-	</scm>
+  <!-- TODO: switch to github -->
+  <scm>
+    <url>https://github.com/sonatype/micromailer</url>
+    <connection>scm:git:git://github.com/sonatype/micromailer.git</connection>
+    <developerConnection>scm:git:git@github.com:sonatype/micromailer.git</developerConnection>
+  </scm>
 
-	<dependencies>
+  <dependencies>
 
-		<dependency>
-			<groupId>org.sonatype.sisu</groupId>
-			<artifactId>sisu-inject-bean</artifactId>
-			<version>${sisu-inject-bean.version}</version>
-		</dependency>
+    <dependency>
+      <groupId>org.sonatype.sisu</groupId>
+      <artifactId>sisu-inject-bean</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-utils</artifactId>
-		</dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
 
-		<!-- Mail composition -->
-		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-velocity</artifactId>
-			<version>1.1.7</version>
-			<type>jar</type>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.plexus</groupId>
-					<artifactId>plexus-container-default</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.codehaus.plexus</groupId>
-					<artifactId>plexus-component-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>velocity</groupId>
-					<artifactId>velocity</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>commons-collections</groupId>
-					<artifactId>commons-collections</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+    <!-- Mail composition -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-velocity</artifactId>
+      <version>1.1.7</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-container-default</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-component-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>velocity</groupId>
+          <artifactId>velocity</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-collections</groupId>
+          <artifactId>commons-collections</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity</artifactId>
-			<version>1.5</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
 
-		<!-- Mail sending -->
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+    <!-- Mail sending -->
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
 
-		<!-- Testing -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.2</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.icegreen</groupId>
-			<artifactId>greenmail</artifactId>
-			<version>1.3</version>
-			<scope>test</scope>
-		</dependency>
+    <!-- Testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.icegreen</groupId>
+      <artifactId>greenmail</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
 
-	</dependencies>
-
+  </dependencies>
 
 </project>
