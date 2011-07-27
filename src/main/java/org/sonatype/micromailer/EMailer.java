@@ -22,6 +22,8 @@ public interface EMailer
     // configuration
 
     void configure( EmailerConfiguration config );
+    
+    void shutdown();
 
     // exposing components
 

@@ -71,6 +71,11 @@ public class DefaultEMailer
     {
         this.emailerConfiguration = config;
     }
+    
+    public void shutdown()
+    {
+        executor.shutdownNow();
+    }
 
     public MailTypeSource getMailTypeSource()
     {
