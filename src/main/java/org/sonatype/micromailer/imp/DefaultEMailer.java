@@ -15,7 +15,9 @@ package org.sonatype.micromailer.imp;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -47,7 +49,7 @@ public class DefaultEMailer
 {
     @Inject
     private Logger logger;
-    
+
     @Inject
     private MailTypeSource mailTypeSource;
 
@@ -60,9 +62,17 @@ public class DefaultEMailer
     @Inject
     private MailSender mailSender;
 
+    // default configuration
     private EmailerConfiguration emailerConfiguration = new EmailerConfiguration();
 
-    private ExecutorService executor = Executors.newCachedThreadPool();
+    // executor service
+    private final ExecutorService executorService;
+
+    public DefaultEMailer()
+    {
+        this.executorService =
+            new ThreadPoolExecutor( 0, 20, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>() );
+    }
 
     // =========================================================================
     // EMailer iface
@@ -71,10 +81,10 @@ public class DefaultEMailer
     {
         this.emailerConfiguration = config;
     }
-    
+
     public void shutdown()
     {
-        executor.shutdownNow();
+        executorService.shutdownNow();
     }
 
     public MailTypeSource getMailTypeSource()
@@ -130,15 +140,15 @@ public class DefaultEMailer
 
         MailRequestStatus status = new MailRequestStatus( request );
 
-        executor.execute( createMailer( request, status ) );
+        executorService.execute( createMailer( request, status ) );
 
         return status;
     }
 
     private RunnableMailer createMailer( MailRequest request, MailRequestStatus status )
     {
-        return new RunnableMailer( logger, request, mailTypeSource, mailComposer, emailerConfiguration,
-                                   mailStorage, mailSender, status );
+        return new RunnableMailer( logger, request, mailTypeSource, mailComposer, emailerConfiguration, mailStorage,
+            mailSender, status );
     }
 
     private static final class RunnableMailer
