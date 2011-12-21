@@ -23,16 +23,16 @@ public class MailRequestStatus
     private final MailRequest mailRequest;
 
     /** Is the mail prepared for sending? */
-    private boolean prepared;
+    private volatile boolean prepared;
 
     /** Is mail persistently stored? */
-    private boolean stored;
+    private volatile boolean stored;
 
     /** Is mail sent? */
-    private boolean sent;
+    private volatile boolean sent;
 
     /** Any problem during processing phases */
-    private Throwable errorCause;
+    private volatile Throwable errorCause;
 
     public MailRequestStatus( MailRequest request )
     {
