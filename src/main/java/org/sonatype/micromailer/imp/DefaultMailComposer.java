@@ -32,7 +32,6 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.codehaus.plexus.velocity.VelocityComponent;
 import org.sonatype.micromailer.Address;
 import org.sonatype.micromailer.EmailerConfiguration;
 import org.sonatype.micromailer.MailComposer;
@@ -41,6 +40,7 @@ import org.sonatype.micromailer.MailCompositionMessagingException;
 import org.sonatype.micromailer.MailCompositionTemplateException;
 import org.sonatype.micromailer.MailRequest;
 import org.sonatype.micromailer.MailType;
+import org.sonatype.sisu.velocity.Velocity;
 
 /**
  * The Velocity powered mail composer.
@@ -62,8 +62,8 @@ public class DefaultMailComposer
 
     public static final String X_MESSAGE_ID_HEADER = "X-EMailer-Mail-Request-ID";
 
-    @Inject @Named("micromailer")
-    private VelocityComponent velocityComponent;
+    @Inject
+    private Velocity velocityComponent;
 
     protected Map<String, Object> initialVelocityContext;
 

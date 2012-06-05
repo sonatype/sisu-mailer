@@ -1,25 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.sonatype.spice</groupId>
     <artifactId>spice-parent</artifactId>
-    <version>17</version>
+    <version>19</version>
   </parent>
 
   <groupId>org.sonatype.sisu</groupId>
   <artifactId>sisu-mailer</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Sisu Mailer</name>
 
-  <properties>
-    <sisu-inject-bean.version>2.2.0</sisu-inject-bean.version>
-    <slf4j.version>1.6.1</slf4j.version>
-  </properties>
-
-  <!-- TODO: switch to github -->
   <scm>
     <url>https://github.com/sonatype/micromailer</url>
     <connection>scm:git:git://github.com/sonatype/micromailer.git</connection>
@@ -29,55 +24,22 @@
   <dependencies>
 
     <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-inject-bean</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
     </dependency>
 
-    <!-- Mail composition -->
+    <!-- Mail composition and sending -->
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-velocity</artifactId>
-      <version>1.1.7</version>
+      <groupId>org.sonatype.sisu</groupId>
+      <artifactId>sisu-velocity</artifactId>
+      <version>1.0-SNAPSHOT</version>
       <type>jar</type>
       <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-container-default</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-component-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>velocity</groupId>
-          <artifactId>velocity</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>commons-collections</groupId>
-          <artifactId>commons-collections</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
-
     <dependency>
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity</artifactId>
@@ -85,8 +47,6 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
-
-    <!-- Mail sending -->
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
@@ -95,11 +55,35 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- SISU, needed if you use this library as a SISU component -->
+    <!-- Then you will have to add this to SISUized environment anyway -->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.sisu</groupId>
+      <artifactId>sisu-inject-bean</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.sisu</groupId>
+      <artifactId>sisu-guice</artifactId>
+      <classifier>no_aop</classifier>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Testing -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
