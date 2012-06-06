@@ -29,7 +29,7 @@ public class MailRequest
 
     private boolean storeable;
 
-    private String encoding = "UTF-8";
+    private String encoding = EMailer.DEFAULT_ENCODING;
 
     private Map<String, String> customHeaders;
 

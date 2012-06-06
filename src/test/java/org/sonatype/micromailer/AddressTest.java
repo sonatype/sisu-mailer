@@ -12,7 +12,6 @@
  */
 package org.sonatype.micromailer;
 
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import junit.framework.TestCase;
@@ -40,20 +39,33 @@ public class AddressTest
         assertEquals( "Kaizer Soze", iadr.getPersonal() );
     }
 
-    public void testBad()
+    public void testBad1()
     {
-        Address adr = new Address( "abc" );
-
         try
         {
-            adr.getInternetAddress( "UTF-8" );
-            
-            fail("Bad email address, should fail!");
+            Address adr = new Address( "abc" );
+
+            fail( "Bad email address, should fail!" );
         }
         catch ( Exception e )
         {
             // good
-            assertEquals( AddressException.class, e.getClass() );
+            assertEquals( IllegalArgumentException.class, e.getClass() );
+        }
+    }
+
+    public void testBad2()
+    {
+        try
+        {
+            Address adr = new Address( "b-at-@!@bigula" );
+
+            fail( "Bad email address, should fail!" );
+        }
+        catch ( Exception e )
+        {
+            // good
+            assertEquals( IllegalArgumentException.class, e.getClass() );
         }
     }
 }

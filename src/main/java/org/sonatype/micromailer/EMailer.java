@@ -19,10 +19,12 @@ package org.sonatype.micromailer;
  */
 public interface EMailer
 {
+    String DEFAULT_ENCODING = "UTF-8";
+
     // configuration
 
     void configure( EmailerConfiguration config );
-    
+
     void shutdown();
 
     // exposing components

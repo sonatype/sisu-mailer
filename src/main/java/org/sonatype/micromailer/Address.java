@@ -26,29 +26,22 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class Address
 {
-    private String mailAddress;
+    private final String mailAddress;
 
-    private String personal;
+    private final String personal;
 
-    public Address( String mailAddress )
+    public Address( final String mailAddress )
+        throws IllegalArgumentException
     {
-        super();
-
-        if ( StringUtils.isEmpty( mailAddress ) )
-        {
-            throw new IllegalArgumentException( "The mailAddress cannot be null!" );
-        }
-
-        this.mailAddress = mailAddress;
-
-        this.personal = null;
+        this( mailAddress, null );
     }
 
-    public Address( String mailAddress, String personal )
+    public Address( final String mailAddress, final String personal )
+        throws IllegalArgumentException
     {
-        this( mailAddress );
-
+        this.mailAddress = mailAddress;
         this.personal = personal;
+        validateAddress( this );
     }
 
     public String getMailAddress()
@@ -56,29 +49,16 @@ public class Address
         return mailAddress;
     }
 
-    public void setMailAddress( String mailAddress )
-    {
-        this.mailAddress = mailAddress;
-    }
-
     public String getPersonal()
     {
         return personal;
     }
 
-    public void setPersonal( String personal )
+    public InternetAddress getInternetAddress( final String encoding )
+        throws AddressException, UnsupportedEncodingException
     {
-        this.personal = personal;
-    }
-
-    public InternetAddress getInternetAddress( String encoding )
-        throws AddressException,
-            UnsupportedEncodingException
-    {
-        InternetAddress adr = new InternetAddress( getMailAddress(), getPersonal(), encoding );
-
+        final InternetAddress adr = new InternetAddress( getMailAddress(), getPersonal(), encoding );
         adr.validate();
-
         return adr;
     }
 
@@ -91,6 +71,54 @@ public class Address
         else
         {
             return "\"" + getPersonal() + "\" <" + getMailAddress() + ">";
+        }
+    }
+
+    // ==
+
+    /**
+     * Performs a formal validation of an e-mail address.
+     * 
+     * @param address string representing an e-mail address.
+     * @throws IllegalArgumentException
+     */
+    public static void validateAddress( final String address )
+        throws IllegalArgumentException
+    {
+        if ( StringUtils.isEmpty( address ) )
+        {
+            throw new IllegalArgumentException( "E-mail address cannot be empty!" );
+        }
+        validateAddress( new Address( address ) );
+    }
+
+    /**
+     * Performs a formal validation of an Address.
+     * 
+     * @param address
+     * @throws IllegalArgumentException
+     */
+    public static void validateAddress( final Address address )
+        throws IllegalArgumentException
+    {
+        if ( address == null )
+        {
+            throw new IllegalArgumentException( "E-mail address is null!" );
+        }
+        try
+        {
+            // this method perform validation too using Java Mail.
+            address.getInternetAddress( EMailer.DEFAULT_ENCODING );
+        }
+        catch ( AddressException e )
+        {
+            throw new IllegalArgumentException( "Invalida e-mail address: " + address.toString(), e );
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            // huh? Emailer.DEFAULT_ENCODING not supported?
+            throw new IllegalStateException( "EMailer needs a JVM that supports " + EMailer.DEFAULT_ENCODING
+                + " encoding!" );
         }
     }
 }
