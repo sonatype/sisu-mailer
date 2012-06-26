@@ -51,6 +51,8 @@ public class MailRequest
 
     private Map<String, DataSource> attachmentMap;
 
+    private List<MailPart> parts = new ArrayList<MailPart>();
+
     private String expandedSubject;
 
     private String expandedBody;
@@ -264,6 +266,19 @@ public class MailRequest
     public void setMimeMessage( MimeMessage mimeMessage )
     {
         this.mimeMessage = mimeMessage;
+    }
+
+    public List<MailPart> getParts()
+    {
+        return parts;
+    }
+
+    public void addPart( MailPart part )
+    {
+        if ( part != null )
+        {
+            parts.add( part );
+        }
     }
 
 }

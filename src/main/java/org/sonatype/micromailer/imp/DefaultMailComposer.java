@@ -38,6 +38,7 @@ import org.sonatype.micromailer.MailComposer;
 import org.sonatype.micromailer.MailCompositionAttachmentException;
 import org.sonatype.micromailer.MailCompositionMessagingException;
 import org.sonatype.micromailer.MailCompositionTemplateException;
+import org.sonatype.micromailer.MailPart;
 import org.sonatype.micromailer.MailRequest;
 import org.sonatype.micromailer.MailType;
 import org.sonatype.sisu.velocity.Velocity;
@@ -184,7 +185,7 @@ public class DefaultMailComposer
                 root.addBodyPart( mimeBodyPart );
             }
 
-            // add attachemtns if any
+            // add attachments if any
 
             for ( String key : request.getAttachmentMap().keySet() )
             {
@@ -195,6 +196,42 @@ public class DefaultMailComposer
                 mimeBodyPart.setFileName( key );
 
                 mimeBodyPart.setDataHandler( new DataHandler( request.getAttachmentMap().get( key ) ) );
+
+                root.addBodyPart( mimeBodyPart );
+            }
+
+            for ( MailPart part : request.getParts() )
+            {
+                MimeBodyPart mimeBodyPart = new MimeBodyPart();
+
+                mimeBodyPart.setDisposition( part.getDisposition() );
+                if ( part.getFilename() != null )
+                {
+                    mimeBodyPart.setFileName( part.getFilename() );
+                }
+
+                if ( part.getContentId() != null )
+                {
+                    mimeBodyPart.setContentID( part.getContentId() );
+                }
+                if ( part.getContentLocation() != null )
+                {
+                    mimeBodyPart.setHeader( "Content-Location", part.getContentLocation() );
+                }
+
+                for ( Map.Entry<String, String> entry : part.getHeaders().entrySet() )
+                {
+                    if ( entry.getValue() == null )
+                    {
+                        mimeBodyPart.removeHeader( entry.getKey() );
+                    }
+                    else
+                    {
+                        mimeBodyPart.setHeader( entry.getKey(), entry.getValue() );
+                    }
+                }
+
+                mimeBodyPart.setDataHandler( part.getContent() );
 
                 root.addBodyPart( mimeBodyPart );
             }
