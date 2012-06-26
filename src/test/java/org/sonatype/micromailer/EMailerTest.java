@@ -13,6 +13,8 @@
 package org.sonatype.micromailer;
 
 import javax.inject.Inject;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 
 import junit.framework.Assert;
@@ -30,6 +32,17 @@ public class EMailerTest
 {
     @Inject
     private EMailer eMailer;
+
+    private GreenMail server;
+
+    public void tearDown()
+        throws Exception
+    {
+        if ( server != null )
+        {
+            server.stop();
+        }
+    }
 
     public void testWithoutConfiguration()
         throws Exception
@@ -64,7 +77,7 @@ public class EMailerTest
 
         // mail server config
         ServerSetup smtp = new ServerSetup( port, null, ServerSetup.PROTOCOL_SMTP );
-        GreenMail server = new GreenMail( smtp );
+        server = new GreenMail( smtp );
         server.setUser( systemMailAddress, username, password );
         server.start();
 
@@ -149,6 +162,60 @@ public class EMailerTest
         // should be null
         Assert.assertNull( config.getAuthenticator() );
         
+    }
+
+    public void testMailParts()
+        throws Exception
+    {
+        final String host = "localhost";
+        final int port = 42358;
+        final String systemMailAddress = "system@nexus.org";
+
+        // mail server config
+        ServerSetup smtp = new ServerSetup( port, null, ServerSetup.PROTOCOL_SMTP );
+        server = new GreenMail( smtp );
+        server.start();
+
+        // mailer config
+        EmailerConfiguration config = new EmailerConfiguration();
+        config.setMailHost( host );
+        config.setMailPort( port );
+        config.setSsl( false );
+        config.setTls( false );
+        config.setDebug( true );
+
+        eMailer.configure( config );
+
+        // prepare a mail request
+        MailRequest request = new MailRequest( "Mail-Test", HtmlMailType.HTML_TYPE_ID );
+        request.setFrom( new Address( systemMailAddress, "Nexus Manager" ) );
+        request.getToAddresses().add( new Address( "user1@nexus.org" ) );
+        request.getBodyContext().put( DefaultMailType.SUBJECT_KEY, "Mail Test Begin." );
+        request.getBodyContext().put( DefaultMailType.BODY_KEY, "Hello World" );
+
+        MailPart part = new MailPart();
+        part.setContent( "Embedded-Image", "text/plain" );
+        part.setDisposition( "inline" );
+        part.setContentId( "<foo@acme.org>" );
+        part.setHeader( "X-Test", "testme" );
+        request.addPart( part );
+
+        // send the mail
+        eMailer.sendMail( request );
+
+        // validate
+        long timeout = 1000;
+        if ( !server.waitForIncomingEmail( timeout, 1 ) )
+        {
+            fail( "Could not receive any email in a timeout of " + timeout );
+        }
+        MimeMessage msgs[] = server.getReceivedMessages();
+        assertEquals( 1, msgs.length );
+        Multipart mp = (Multipart) msgs[0].getContent();
+        MimeBodyPart bp = (MimeBodyPart) mp.getBodyPart( 1 );
+        assertEquals( part.getDisposition(), bp.getDisposition() );
+        assertEquals( part.getContentId(), bp.getContentID() );
+        assertEquals( "testme", bp.getHeader( "X-Test", null ) );
     }
 
 }
