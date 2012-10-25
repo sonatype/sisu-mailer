@@ -27,6 +27,11 @@ import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetup;
 
+import static org.junit.Assert.*;
+
+/**
+ * Tests for {@link EMailer}.
+ */
 public class EMailerTest
     extends InjectedTestCase
 {

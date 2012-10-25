@@ -15,13 +15,19 @@ package org.sonatype.micromailer;
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.TestCase;
-
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Test;
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
+import static org.junit.Assert.*;
+
+/**
+ * Test for {@link ClasspathResource}.
+ */
 public class ClasspathResourceTest
-    extends TestCase
+    extends TestSupport
 {
+    @Test
     public void testSimple()
     {
         ClasspathResource res = new ClasspathResource( "/sample.txt", "sample", "text/plain" );

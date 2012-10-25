@@ -14,11 +14,18 @@ package org.sonatype.micromailer;
 
 import javax.mail.internet.InternetAddress;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
+import static org.junit.Assert.*;
+
+/**
+ * Tests for {@link Address}.
+ */
 public class AddressTest
-    extends TestCase
+    extends TestSupport
 {
+    @Test
     public void testGood()
         throws Exception
     {
@@ -39,6 +46,7 @@ public class AddressTest
         assertEquals( "Kaizer Soze", iadr.getPersonal() );
     }
 
+    @Test
     public void testBad1()
     {
         try
@@ -54,6 +62,7 @@ public class AddressTest
         }
     }
 
+    @Test
     public void testBad2()
     {
         try
