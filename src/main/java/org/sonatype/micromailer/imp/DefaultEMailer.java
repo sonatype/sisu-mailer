@@ -24,6 +24,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonatype.micromailer.EMailer;
 import org.sonatype.micromailer.EmailerConfiguration;
 import org.sonatype.micromailer.MailComposer;
@@ -47,8 +48,7 @@ import org.sonatype.micromailer.MailTypeSource;
 public class DefaultEMailer
     implements EMailer
 {
-    @Inject
-    private Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Inject
     private MailTypeSource mailTypeSource;
@@ -136,7 +136,7 @@ public class DefaultEMailer
 
     protected MailRequestStatus handleMailRequest( MailRequest request )
     {
-        logger.info( "  Handling mail request " + request.getRequestId() );
+        logger.info( "  Handling mail request {}", request.getRequestId() );
 
         MailRequestStatus status = new MailRequestStatus( request );
 
@@ -190,7 +190,7 @@ public class DefaultEMailer
             {
                 if ( logger.isDebugEnabled() )
                 {
-                    logger.debug( "  PREPARING " + request.getRequestId() );
+                    logger.debug( "  PREPARING {}", request.getRequestId() );
                 }
 
                 MailType mailType = mailTypeSource.getMailType( request.getMailTypeId() );
@@ -224,7 +224,7 @@ public class DefaultEMailer
             }
             catch ( IOException ex )
             {
-                logger.warn( "IOException during handling of mail request Id = [" + request.getRequestId() + "]", ex );
+                logger.warn( "IOException during handling of mail request Id = [{}]", request.getRequestId(), ex );
 
                 status.setErrorCause( ex );
             }

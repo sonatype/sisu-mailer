@@ -63,7 +63,7 @@ public class DefaultMailSender
         }
         catch ( MessagingException ex )
         {
-            throw new MailCompositionMessagingException( "MessagingException occured!", ex );
+            throw new MailCompositionMessagingException( "MessagingException occurred!", ex );
         }
     }
 }

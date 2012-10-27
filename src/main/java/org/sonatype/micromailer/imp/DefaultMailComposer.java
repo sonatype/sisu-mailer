@@ -259,11 +259,11 @@ public class DefaultMailComposer
         }
         catch ( UnsupportedEncodingException ex )
         {
-            throw new MailCompositionMessagingException( "Unsupported encoding occured!", ex );
+            throw new MailCompositionMessagingException( "Unsupported encoding occurred!", ex );
         }
         catch ( MessagingException ex )
         {
-            throw new MailCompositionMessagingException( "MessagingException occured!", ex );
+            throw new MailCompositionMessagingException( "MessagingException occurred!", ex );
         }
     }
 
