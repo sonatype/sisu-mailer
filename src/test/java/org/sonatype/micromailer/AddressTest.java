@@ -46,35 +46,17 @@ public class AddressTest
         assertEquals( "Kaizer Soze", iadr.getPersonal() );
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testBad1()
     {
-        try
-        {
-            Address adr = new Address( "abc" );
-
-            fail( "Bad email address, should fail!" );
-        }
-        catch ( Exception e )
-        {
-            // good
-            assertEquals( IllegalArgumentException.class, e.getClass() );
-        }
+        Address adr = new Address( "abc" );
+        fail( "Bad email address, should fail!" );
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testBad2()
     {
-        try
-        {
-            Address adr = new Address( "b-at-@!@bigula" );
-
-            fail( "Bad email address, should fail!" );
-        }
-        catch ( Exception e )
-        {
-            // good
-            assertEquals( IllegalArgumentException.class, e.getClass() );
-        }
+        Address adr = new Address( "b-at-@!@bigula" );
+        fail( "Bad email address, should fail!" );
     }
 }
