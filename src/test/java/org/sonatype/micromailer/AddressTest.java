@@ -14,11 +14,18 @@ package org.sonatype.micromailer;
 
 import javax.mail.internet.InternetAddress;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
+import static org.junit.Assert.*;
+
+/**
+ * Tests for {@link Address}.
+ */
 public class AddressTest
-    extends TestCase
+    extends TestSupport
 {
+    @Test
     public void testGood()
         throws Exception
     {
@@ -39,33 +46,17 @@ public class AddressTest
         assertEquals( "Kaizer Soze", iadr.getPersonal() );
     }
 
+    @Test(expected = IllegalArgumentException.class)
     public void testBad1()
     {
-        try
-        {
-            Address adr = new Address( "abc" );
-
-            fail( "Bad email address, should fail!" );
-        }
-        catch ( Exception e )
-        {
-            // good
-            assertEquals( IllegalArgumentException.class, e.getClass() );
-        }
+        Address adr = new Address( "abc" );
+        fail( "Bad email address, should fail!" );
     }
 
+    @Test(expected = IllegalArgumentException.class)
     public void testBad2()
     {
-        try
-        {
-            Address adr = new Address( "b-at-@!@bigula" );
-
-            fail( "Bad email address, should fail!" );
-        }
-        catch ( Exception e )
-        {
-            // good
-            assertEquals( IllegalArgumentException.class, e.getClass() );
-        }
+        Address adr = new Address( "b-at-@!@bigula" );
+        fail( "Bad email address, should fail!" );
     }
 }

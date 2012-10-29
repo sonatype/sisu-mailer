@@ -19,24 +19,32 @@ import javax.mail.internet.MimeMessage;
 
 import junit.framework.Assert;
 
-import org.sonatype.guice.bean.containers.InjectedTestCase;
+import org.junit.After;
+import org.junit.Test;
 import org.sonatype.micromailer.imp.DefaultMailType;
 import org.sonatype.micromailer.imp.HtmlMailType;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetup;
+import org.sonatype.sisu.litmus.testsupport.inject.InjectedTestSupport;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+
+/**
+ * Tests for {@link EMailer}.
+ */
 public class EMailerTest
-    extends InjectedTestCase
+    extends InjectedTestSupport
 {
     @Inject
     private EMailer eMailer;
 
     private GreenMail server;
 
-    public void tearDown()
-        throws Exception
+    @After
+    public void stopServer()
     {
         if ( server != null )
         {
@@ -44,10 +52,13 @@ public class EMailerTest
         }
     }
 
-    public void testWithoutConfiguration()
+    @Test
+    public void withoutConfiguration()
         throws Exception
     {
         MailRequest request = new MailRequest( "testId", DefaultMailType.DEFAULT_TYPE_ID );
+        request.getBodyContext().put( DefaultMailType.SUBJECT_KEY, "Test" );
+        request.getBodyContext().put( DefaultMailType.BODY_KEY, "Body" );
 
         MailRequestStatus status = eMailer.sendMail( request );
 
@@ -59,14 +70,15 @@ public class EMailerTest
             count++;
         }
 
-        assertFalse( status.isSent() );
+        assertThat(status.isSent(), is(false));
+        assertThat(status, notNullValue());
+        assertThat(status.getErrorCause(), notNullValue());
 
-        assertNotNull( status.getErrorCause() );
-
-        assertEquals( MailCompositionMessagingException.class, status.getErrorCause().getClass() );
+        assertThat(MailCompositionMessagingException.class.isAssignableFrom(status.getErrorCause().getClass()), is(true));
     }
 
-    public void testRealOnLocalhost()
+    @Test
+    public void tealOnLocalhost()
         throws Exception
     {
         final String host = "localhost";
@@ -124,7 +136,8 @@ public class EMailerTest
 
     }
 
-    public void testEmptyUsername()
+    @Test
+    public void emptyUsername()
     {
         final String host = "localhost";
         final int port = 12345;
@@ -164,7 +177,8 @@ public class EMailerTest
         
     }
 
-    public void testMailParts()
+    @Test
+    public void mailParts()
         throws Exception
     {
         final String host = "localhost";

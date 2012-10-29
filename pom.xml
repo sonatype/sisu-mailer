@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -10,9 +11,8 @@
 
   <groupId>org.sonatype.sisu</groupId>
   <artifactId>sisu-mailer</artifactId>
-  <version>1.6-SNAPSHOT</version>
-  <packaging>jar</packaging>
   <name>Sisu Mailer</name>
+  <version>1.6-SNAPSHOT</version>
 
   <scm>
     <url>https://github.com/sonatype/micromailer</url>
@@ -21,77 +21,58 @@
   </scm>
 
   <dependencies>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <version>1.7.2</version>
     </dependency>
+
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
+      <version>3.0.8</version>
     </dependency>
 
-    <!-- Mail composition and sending -->
     <dependency>
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-velocity</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.velocity</groupId>
-      <artifactId>velocity</artifactId>
-      <version>1.5</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
+
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
       <version>1.4</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
 
-    <!-- SISU, needed if you use this library as a SISU component -->
-    <!-- Then you will have to add this to SISUized environment anyway -->
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-inject-bean</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-guice</artifactId>
-      <classifier>no_aop</classifier>
-      <scope>provided</scope>
+      <version>1</version>
+      <optional>true</optional>
     </dependency>
 
     <!-- Testing -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <type>jar</type>
+      <groupId>org.sonatype.sisu.litmus</groupId>
+      <artifactId>litmus-testsupport</artifactId>
+      <version>1.5-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
+      <groupId>org.sonatype.sisu</groupId>
+      <artifactId>sisu-inject-bean</artifactId>
+      <version>2.3.1</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail</artifactId>
       <version>1.3</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
 </project>
