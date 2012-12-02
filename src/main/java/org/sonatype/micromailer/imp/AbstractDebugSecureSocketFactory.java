@@ -22,9 +22,9 @@ import javax.net.ssl.TrustManager;
 
 /**
  * Debug SSL Socket factory. A "naive" one, that will eat SelfSigned ones too, but NOT FOR PRODUCTION USE!
- * 
+ *
  * @author cstamas
- * @see http://www.howardism.org/Technical/Java/SelfSignedCerts.html
+ * @see <a href="http://www.howardism.org/Technical/Java/SelfSignedCerts.html">http://www.howardism.org/Technical/Java/SelfSignedCerts.html</a>
  */
 public abstract class AbstractDebugSecureSocketFactory
     extends SSLSocketFactory
@@ -39,7 +39,7 @@ public abstract class AbstractDebugSecureSocketFactory
 
             sslcontext.init( null, new TrustManager[] { new NaiveTrustManager() }, null );
 
-            factory = (SSLSocketFactory) sslcontext.getSocketFactory();
+            factory = sslcontext.getSocketFactory();
         }
         catch ( Exception ex )
         {

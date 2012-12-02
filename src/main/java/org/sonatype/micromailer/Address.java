@@ -21,7 +21,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * The address used in To, From, Sender, etc. fields. The mailbox with optional "personal" name of the mailbox.
- * 
+ *
  * @author cstamas
  */
 public class Address
@@ -78,7 +78,7 @@ public class Address
 
     /**
      * Performs a formal validation of an e-mail address.
-     * 
+     *
      * @param address string representing an e-mail address.
      * @throws IllegalArgumentException
      */
@@ -94,8 +94,8 @@ public class Address
 
     /**
      * Performs a formal validation of an Address.
-     * 
-     * @param address
+     *
+     * @param address the address to validate
      * @throws IllegalArgumentException
      */
     public static void validateAddress( final Address address )

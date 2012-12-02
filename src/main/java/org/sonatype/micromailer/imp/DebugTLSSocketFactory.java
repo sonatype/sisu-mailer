@@ -16,9 +16,9 @@ import javax.net.SocketFactory;
 
 /**
  * Debug TLS Socket factory. A "naive" one, that will eat SelfSigned ones too, but NOT FOR PRODUCTION USE!
- * 
+ *
  * @author cstamas
- * @see http://www.howardism.org/Technical/Java/SelfSignedCerts.html
+ * @see <a href="http://www.howardism.org/Technical/Java/SelfSignedCerts.html">http://www.howardism.org/Technical/Java/SelfSignedCerts.html</a>
  */
 public class DebugTLSSocketFactory
     extends AbstractDebugSecureSocketFactory
