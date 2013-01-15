@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.codehaus.plexus.util.StringUtils;
+import org.sonatype.micromailer.imp.Strings;
 
 /**
  * The address used in To, From, Sender, etc. fields. The mailbox with optional "personal" name of the mailbox.
@@ -64,7 +64,7 @@ public class Address
 
     public String toString()
     {
-        if ( StringUtils.isEmpty( getPersonal() ) )
+        if ( Strings.isEmpty(getPersonal()) )
         {
             return "<" + getMailAddress() + ">";
         }
@@ -85,7 +85,7 @@ public class Address
     public static void validateAddress( final String address )
         throws IllegalArgumentException
     {
-        if ( StringUtils.isEmpty( address ) )
+        if ( Strings.isEmpty( address ) )
         {
             throw new IllegalArgumentException( "E-mail address cannot be empty!" );
         }

@@ -17,8 +17,8 @@ import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.Session;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.micromailer.imp.DefaultAuthenticator;
+import org.sonatype.micromailer.imp.Strings;
 
 public class EmailerConfiguration
 {
@@ -174,7 +174,7 @@ public class EmailerConfiguration
 
     public Authenticator getAuthenticator()
     {
-        if ( StringUtils.isNotEmpty( getUsername() ) )
+        if ( Strings.isNotEmpty(getUsername()) )
         {
             return new DefaultAuthenticator( getUsername(), getPassword() );
         }
@@ -196,12 +196,12 @@ public class EmailerConfiguration
 
             properties.setProperty( MAIL_TRANSPORT_PROTOCOL, "smtp" );
 
-            if ( StringUtils.isEmpty( getMailHost() ) )
+            if ( Strings.isEmpty( getMailHost() ) )
             {
                 setMailHost( properties.getProperty( MAIL_HOST ) );
             }
 
-            if ( StringUtils.isEmpty( getMailHost() ) )
+            if ( Strings.isEmpty( getMailHost() ) )
             {
                 throw new MailCompositionMessagingException( "Cannot find valid hostname for mail session" );
             }
