@@ -250,9 +250,22 @@ public class EmailerConfiguration
                 properties.setProperty( MAIL_SMTP_FROM, getBounceAddress() );
             }
 
-            this.session = Session.getInstance( properties, authenticator );
+            this.session = createSession( properties, authenticator );
         }
 
         return this.session;
     }
+
+    /**
+     * Template method for creating SMTP session.
+     *
+     * @param properties    properties object that hold relevant SMTP properties (cannot be null).
+     * @param authenticator authenticator (null if authentication is not required)
+     * @return SMTP session (never null)
+     */
+    protected Session createSession( final Properties properties, final Authenticator authenticator )
+    {
+        return Session.getInstance( properties, authenticator );
+    }
+
 }
