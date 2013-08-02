@@ -220,14 +220,32 @@ public class DefaultEMailer
             }
             catch ( MailCompositionException ex )
             {
-                status.setErrorCause( ex );
+                handleException( ex );
             }
             catch ( IOException ex )
             {
-                logger.warn( "IOException during handling of mail request Id = [{}]", request.getRequestId(), ex );
-
-                status.setErrorCause( ex );
+                handleException( ex );
             }
+        }
+
+        private void handleException( final Exception ex )
+        {
+            if ( logger.isDebugEnabled() )
+            {
+                logger.warn(
+                    "Exception during handling of mail request Id = [{}]",
+                    request.getRequestId(), ex
+                );
+            }
+            else
+            {
+                logger.warn(
+                    "Exception during handling of mail request Id = [{}]: {}/{}",
+                    request.getRequestId(), ex.getClass().getName(), ex.getMessage()
+                );
+            }
+
+            status.setErrorCause( ex );
         }
     }
 
