@@ -233,14 +233,14 @@ public class DefaultEMailer
             if ( logger.isDebugEnabled() )
             {
                 logger.warn(
-                    "Exception during handling of mail request Id = [{}]",
+                    "Problem delivering mail requestId[{}]",
                     request.getRequestId(), ex
                 );
             }
             else
             {
                 logger.warn(
-                    "Exception during handling of mail request Id = [{}]: {}/{}",
+                    "Problem delivering mail requestId[{}]: {}/{}",
                     request.getRequestId(), ex.getClass().getName(), ex.getMessage()
                 );
             }
