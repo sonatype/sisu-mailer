@@ -24,7 +24,7 @@
 
   <groupId>org.sonatype.sisu</groupId>
   <artifactId>sisu-mailer</artifactId>
-  <version>1.7.2-SNAPSHOT</version>
+  <version>1.7.2</version>
 
   <url>https://github.com/sonatype/sisu-mailer</url>
   <inceptionYear>2008</inceptionYear>
