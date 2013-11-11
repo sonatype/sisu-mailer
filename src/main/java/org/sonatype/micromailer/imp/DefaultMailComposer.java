@@ -74,7 +74,7 @@ public class DefaultMailComposer
       this.velocityEngineProvider = velocityEngineProvider;
     }
 
-  public Map<String, Object> getInitialVelocityContext()
+    public Map<String, Object> getInitialVelocityContext()
     {
         return initialVelocityContext;
     }
