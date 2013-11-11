@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.activation.DataHandler;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
@@ -32,6 +33,8 @@ import javax.mail.internet.MimeMultipart;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+
 import org.sonatype.micromailer.Address;
 import org.sonatype.micromailer.EmailerConfiguration;
 import org.sonatype.micromailer.MailComposer;
@@ -41,7 +44,6 @@ import org.sonatype.micromailer.MailCompositionTemplateException;
 import org.sonatype.micromailer.MailPart;
 import org.sonatype.micromailer.MailRequest;
 import org.sonatype.micromailer.MailType;
-import org.sonatype.sisu.velocity.Velocity;
 
 /**
  * The Velocity powered mail composer.
@@ -63,12 +65,16 @@ public class DefaultMailComposer
 
     public static final String X_MESSAGE_ID_HEADER = "X-EMailer-Mail-Request-ID";
 
-    @Inject
-    private Velocity velocityComponent;
+    private final Provider<VelocityEngine> velocityEngineProvider;
 
     protected Map<String, Object> initialVelocityContext;
 
-    public Map<String, Object> getInitialVelocityContext()
+    @Inject
+    public DefaultMailComposer(final Provider<VelocityEngine> velocityEngineProvider) {
+      this.velocityEngineProvider = velocityEngineProvider;
+    }
+
+  public Map<String, Object> getInitialVelocityContext()
     {
         return initialVelocityContext;
     }
@@ -295,7 +301,7 @@ public class DefaultMailComposer
 
             VelocityContext context = new VelocityContext( getInitialVelocityContext(), new VelocityContext( model ) );
 
-            velocityComponent.getEngine().evaluate( context, sw, "SUBJECT", template );
+            velocityEngineProvider.get().evaluate( context, sw, "SUBJECT", template );
 
             return sw.toString();
         }
@@ -312,7 +318,7 @@ public class DefaultMailComposer
         {
             StringWriter sw = new StringWriter();
 
-            Template template = velocityComponent.getEngine().getTemplate( templateResourceName, "UTF-8" );
+            Template template = velocityEngineProvider.get().getTemplate( templateResourceName, "UTF-8" );
 
             VelocityContext context = new VelocityContext( getInitialVelocityContext(), new VelocityContext( model ) );
 
