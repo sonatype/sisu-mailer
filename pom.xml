@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.sonatype.sisu.litmus</groupId>
       <artifactId>litmus-testsupport</artifactId>
-      <version>1.5.1</version>
+      <version>1.8</version>
       <scope>test</scope>
     </dependency>
 
@@ -83,9 +83,16 @@
     </dependency>
 
     <dependency>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.inject</artifactId>
+      <version>0.1.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-inject-bean</artifactId>
-      <version>2.3.1</version>
+      <artifactId>sisu-guice</artifactId>
+      <version>3.1.8</version>
       <scope>test</scope>
     </dependency>
 
