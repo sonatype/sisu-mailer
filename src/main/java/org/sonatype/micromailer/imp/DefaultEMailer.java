@@ -186,8 +186,11 @@ public class DefaultEMailer
 
         public void run()
         {
+            ClassLoader tccl = Thread.currentThread().getContextClassLoader();
             try
             {
+                Thread.currentThread().setContextClassLoader( javax.mail.Session.class.getClassLoader() );
+
                 if ( logger.isDebugEnabled() )
                 {
                     logger.debug( "  PREPARING {}", request.getRequestId() );
@@ -225,6 +228,10 @@ public class DefaultEMailer
             catch ( IOException ex )
             {
                 handleException( ex );
+            }
+            finally
+            {
+                Thread.currentThread().setContextClassLoader( tccl );
             }
         }
 
