@@ -112,7 +112,7 @@ public class Address
         }
         catch ( AddressException e )
         {
-            throw new IllegalArgumentException( "Invalida e-mail address: " + address.toString(), e );
+            throw new IllegalArgumentException( "Invalid e-mail address: " + address.toString(), e );
         }
         catch ( UnsupportedEncodingException e )
         {
