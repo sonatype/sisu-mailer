@@ -13,6 +13,7 @@
 package org.sonatype.micromailer;
 
 import javax.inject.Inject;
+import javax.mail.Message.RecipientType;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -203,8 +204,10 @@ public class EMailerTest
         // prepare a mail request
         MailRequest request = new MailRequest( "Mail-Test", HtmlMailType.HTML_TYPE_ID );
         request.setFrom( new Address( systemMailAddress, "Nexus Manager" ) );
-        request.getToAddresses().add( new Address( "user1@nexus.org" ) );
-        request.getBodyContext().put( DefaultMailType.SUBJECT_KEY, "Mail Test Begin." );
+        request.getToAddresses().add(new Address("user1@nexus.org"));
+        request.getCcAddresses().add( new Address( "ccuser@nexus.org" ) );
+        request.getBccAddresses().add( new Address( "bccuser@nexus.org" ) );
+        request.getBodyContext().put(DefaultMailType.SUBJECT_KEY, "Mail Test Begin.");
         request.getBodyContext().put( DefaultMailType.BODY_KEY, "Hello World" );
 
         MailPart part = new MailPart();
@@ -224,12 +227,37 @@ public class EMailerTest
             fail( "Could not receive any email in a timeout of " + timeout );
         }
         MimeMessage msgs[] = server.getReceivedMessages();
-        assertEquals( 1, msgs.length );
+        assertEquals( 3, msgs.length );
         Multipart mp = (Multipart) msgs[0].getContent();
         MimeBodyPart bp = (MimeBodyPart) mp.getBodyPart( 1 );
         assertEquals( part.getDisposition(), bp.getDisposition() );
         assertEquals( part.getContentId(), bp.getContentID() );
         assertEquals( "testme", bp.getHeader( "X-Test", null ) );
+
+        //checking to make sure we have proper TO and CC addresses
+        //prior to this commit, TO/CC/BCC addresses were all getting
+        //stuffed in the TO header
+        assertNotNull( msgs[0].getRecipients( RecipientType.TO ) );
+        assertNotNull( msgs[0].getRecipients( RecipientType.CC ) );
+        assertNull( msgs[0].getRecipients( RecipientType.BCC ) );
+        assertNotNull( msgs[1].getRecipients( RecipientType.TO ) );
+        assertNotNull( msgs[1].getRecipients( RecipientType.CC ) );
+        assertNull( msgs[1].getRecipients( RecipientType.BCC ) );
+        assertNotNull( msgs[2].getRecipients( RecipientType.TO ) );
+        assertNotNull( msgs[2].getRecipients( RecipientType.CC ) );
+        assertNull( msgs[2].getRecipients( RecipientType.BCC ) );
+        assertEquals( 1, msgs[0].getRecipients( RecipientType.TO ).length );
+        assertEquals( 1, msgs[0].getRecipients( RecipientType.CC ).length );
+        assertEquals( 1, msgs[1].getRecipients( RecipientType.TO ).length );
+        assertEquals( 1, msgs[1].getRecipients( RecipientType.CC ).length );
+        assertEquals( 1, msgs[2].getRecipients( RecipientType.TO ).length );
+        assertEquals( 1, msgs[2].getRecipients( RecipientType.CC ).length );
+        assertEquals( "user1@nexus.org", msgs[0].getRecipients( RecipientType.TO )[0].toString() );
+        assertEquals( "ccuser@nexus.org", msgs[0].getRecipients( RecipientType.CC )[0].toString() );
+        assertEquals( "user1@nexus.org", msgs[1].getRecipients( RecipientType.TO )[0].toString() );
+        assertEquals( "ccuser@nexus.org", msgs[1].getRecipients( RecipientType.CC )[0].toString() );
+        assertEquals( "user1@nexus.org", msgs[2].getRecipients( RecipientType.TO )[0].toString() );
+        assertEquals( "ccuser@nexus.org", msgs[2].getRecipients( RecipientType.CC )[0].toString() );
     }
 
 }

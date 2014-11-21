@@ -54,7 +54,7 @@ public class DefaultMailSender
             {
                 t.connect();
 
-                t.sendMessage( message, message.getAllRecipients() );
+                t.send( message );
             }
             finally
             {
